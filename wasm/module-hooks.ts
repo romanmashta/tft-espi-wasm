@@ -1,14 +1,15 @@
 import {useEffect, useState} from "react";
+import {ModuleConfig} from "./tft-espi-wrapper";
 
-export type ModuleLoader<T> = () => Promise<T>;
+export type ModuleLoader<T> = (config: ModuleConfig) => Promise<T>;
 
-export const useModule = <T>(loader: ModuleLoader<T>) => {
+export const useModule = <T>(loader: ModuleLoader<T>, config: ModuleConfig) => {
   const [module, setModule] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    loader()
+    loader(config)
       .then(resolvedModule => {
         setModule(resolvedModule);
         setLoading(false);

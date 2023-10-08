@@ -1,14 +1,31 @@
-import {useEffect, MutableRefObject} from "react";
-import {useModule} from "./module-hooks";
-import {TftEspiModuleLoader} from "./tft-espi-wrapper";
+import {useEffect, MutableRefObject, useState} from "react";
+import {TftEspiModule, TftEspiModuleLoader} from "./tft-espi-wrapper";
 
 export const useTftEspi = (canvasRef: MutableRefObject<HTMLCanvasElement | null>) => {
-  const {module} = useModule(TftEspiModuleLoader);
+  const [module, setModule] = useState<TftEspiModule | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (module && canvasRef.current) {
-      module.canvas = canvasRef.current;
-      const tft = new module.TFTSpi(320, 240);
+    if(canvasRef.current && TftEspiModuleLoader){
+      const config = {
+        canvas: canvasRef.current
+      };
+      TftEspiModuleLoader(config)
+        .then(resolvedModule => {
+          setModule(resolvedModule);
+          setLoading(false);
+        })
+        .catch(err => {
+          setError(err);
+          setLoading(false);
+        });
+    }
+  }, [canvasRef]);
+
+  useEffect(() => {
+    if (module) {
+      const tft = new module.TFTSpi(320, 240, canvasRef.current?.id);
       tft.init();
       tft.draw();
     }

@@ -4,11 +4,11 @@ import ModuleImpl from './tft-espi-wasm'
 import type {TFTSpi} from "./types/tft-spi";
 import type {ModuleLoader} from "./module-hooks";
 
-export type ModuleBase = {
+export type ModuleConfig = {
   canvas?: HTMLCanvasElement;
 }
 
-export type TftEspiModule = ModuleBase & {
+export type TftEspiModule = ModuleConfig & {
   TFTSpi: TFTSpi;
 }
 
