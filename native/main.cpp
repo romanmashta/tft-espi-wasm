@@ -2,6 +2,7 @@
 #include <SDL2/SDL_hints.h>
 #include <emscripten/bind.h>
 #include <emscripten/emscripten.h>
+#include <TFT_eSPI.h>
 
 class TFTSpi {
 public:
@@ -21,17 +22,21 @@ public:
       SDL_Init(SDL_INIT_VIDEO);
       SDL_CreateWindowAndRenderer(_width, _height, SDL_WINDOW_OPENGL, &_window,
                                   &_renderer);
+      _tft = new TFT_eSPI();
+      _sprite = new TFT_eSprite(_tft);
+      _sprite->createSprite(_width, _height);
     }
 
     void draw() {
       uint8_t *pixels = new uint8_t[_width * _height * 4];
-      for (int y = 0; y < _height; y++) {
-        for (int x = 0; x < _width; x++) {
-          pixels[y * (_width * 4) + x * 4] = x ^ y;
-          pixels[y * (_width * 4) + x * 4 + 1] = 0;
-          pixels[y * (_width * 4) + x * 4 + 2] = 0;
-          pixels[y * (_width * 4) + x * 4 + 3] = 255;
-        }
+      uint16_t *spr = (uint16_t*)_sprite->getPointer();
+
+      for (int i = 0; i < _width * _height; i++) {
+        uint16_t c = spr[i];
+        pixels[i * 4] = (c & 0xF800) >> 8;
+        pixels[i * 4 + 1] = (c & 0x07E0) >> 3;
+        pixels[i * 4 + 2] = (c & 0x001F) << 3;
+        pixels[i * 4 + 3] = 255;
       }
 
       // Create a texture to hold the pixel data
@@ -56,6 +61,10 @@ public:
       delete[] pixels;
     }
 
+    void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t color) {
+      _sprite->drawLine(x0, y0, x1, y1, color);
+    }
+
 private:
     std::string _canvasId;
     size_t _width;
@@ -63,6 +72,8 @@ private:
     bool _inited;
     SDL_Window *_window;
     SDL_Renderer *_renderer;
+    TFT_eSPI* _tft;
+    TFT_eSprite* _sprite;
 };
 
 int main() {
@@ -78,5 +89,6 @@ EMSCRIPTEN_BINDINGS(my_class_example) {
   class_<TFTSpi>("TFTSpi")
     .constructor<int, int, emscripten::val>()
     .function("init", &TFTSpi::init)
-    .function("draw", &TFTSpi::draw);
+    .function("draw", &TFTSpi::draw)
+    .function("drawLine", &TFTSpi::drawLine);
 }
