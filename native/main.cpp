@@ -65,6 +65,18 @@ public:
       _sprite->drawLine(x0, y0, x1, y1, color);
     }
 
+    void drawString(const std::string& string, int16_t x, int16_t y, uint8_t font) {
+      _sprite->drawString(string.c_str(), x, y, font);
+    }
+
+    void setFont(uint8_t font) {
+      _sprite->setTextFont(font);
+    }
+
+    void drawSmoothRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint32_t color) {
+      _sprite->drawRoundRect(x, y, w, h, r, color);
+    }
+
 private:
     std::string _canvasId;
     size_t _width;
@@ -90,5 +102,9 @@ EMSCRIPTEN_BINDINGS(my_class_example) {
     .constructor<int, int, emscripten::val>()
     .function("init", &TFTSpi::init)
     .function("draw", &TFTSpi::draw)
-    .function("drawLine", &TFTSpi::drawLine);
+    .function("drawLine", &TFTSpi::drawLine)
+    .function("drawString", &TFTSpi::drawString)
+    .function("setFont", &TFTSpi::setFont)
+    .function("drawSmoothRoundRect", &TFTSpi::drawSmoothRoundRect)
+    ;
 }
