@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && npm run copyjs",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "copyjs": "cp wasm/*.js dist/"
+    "copyjs": "cp src/*.js dist/"
   },
   "devDependencies": {
     "typescript": "^5.2.2"

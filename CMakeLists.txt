@@ -14,11 +14,14 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${USE_FLAGS} ${LINK_FLAGS}
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} native/main.cpp)
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${LINK_FLAGS})
 
 add_custom_command(
         TARGET ${PROJECT_NAME}
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.js
-        ${CMAKE_SOURCE_DIR}/wasm/${PROJECT_NAME}.js)
+        ${CMAKE_SOURCE_DIR}/src/${PROJECT_NAME}.js
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.js
+        ${CMAKE_SOURCE_DIR}/dist/${PROJECT_NAME}.js
+)

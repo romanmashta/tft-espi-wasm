@@ -9,7 +9,7 @@
     "moduleResolution": "node",
   },
   "include": [
-    "wasm"
+    "src"
   ],
   "exclude": [
     "node_modules"
