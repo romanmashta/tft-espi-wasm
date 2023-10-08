@@ -1,2 +1,3 @@
-import tftModule from '../wasm/tft-espi-wasm'
-export default tftModule
+export * from './tft-espi-wrapper';
+export * from './module-hooks';
+export * from './tft-espi-hooks';

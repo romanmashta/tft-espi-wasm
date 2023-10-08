@@ -21,7 +21,7 @@ public:
         for (int x = 0; x < _width; x++) {
           pixels[y * (_width * 4) + x * 4] = x^y;
           pixels[y * (_width * 4) + x * 4 + 1] = 0;
-          pixels[y * (_width * 4) + x * 4 + 2] = 0;
+          pixels[y * (_width * 4) + x * 4 + 2] = 1;
           pixels[y * (_width * 4) + x * 4 + 3] = 255;
         }
       }
