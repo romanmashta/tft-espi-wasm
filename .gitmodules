@@ -1,0 +1,3 @@
+[submodule "native/libs/TFT_eSPI"]
+	path = native/libs/TFT_eSPI
+	url = git@github.com:Bodmer/TFT_eSPI.git
