@@ -21,6 +21,7 @@ export const useTftEspi = (callback:ModuleCallback, canvasRef: MutableRefObject<
         .catch(err => {
           setError(err);
           setLoading(false);
+          console.error(err);
         });
     }
   }, [canvasRef]);

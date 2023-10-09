@@ -1,6 +1,11 @@
 add_subdirectory(libs/TFT_eSPI)
 
-target_sources(${PROJECT_NAME} PRIVATE main.cpp)
+target_sources(${PROJECT_NAME} PRIVATE
+        src/main.cpp
+        src/Spi.cpp
+        src/Sprite.cpp
+        src/DisplayContext.cpp
+)
 target_include_directories(${PROJECT_NAME} PRIVATE
         libs/TFT_eSPI
         ${ArduinoFake_SOURCE_DIR}/src
