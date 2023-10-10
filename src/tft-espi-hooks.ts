@@ -1,19 +1,20 @@
 import {useEffect, MutableRefObject, useState} from "react";
-import {TftEspiModule, TftEspiModuleLoader} from "./tft-espi-wrapper";
+import Module from "./tft-espi-wasm";
+import {ModuleConfig} from "./module-config";
 
-type ModuleCallback = (module:TftEspiModule) => void;
+type ModuleCallback = (module:typeof Module) => void;
 
 export const useTftEspi = (callback:ModuleCallback, canvasRef: MutableRefObject<HTMLCanvasElement | null>) => {
-  const [module, setModule] = useState<TftEspiModule | null>(null);
+  const [module, setModule] = useState<typeof Module | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if(canvasRef.current && TftEspiModuleLoader){
+    if(canvasRef.current){
       const config = {
         canvas: canvasRef.current
       };
-      TftEspiModuleLoader(config)
+      Module(config)
         .then(resolvedModule => {
           setModule(resolvedModule);
           setLoading(false);

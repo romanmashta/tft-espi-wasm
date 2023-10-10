@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
-import {ModuleConfig} from "./tft-espi-wrapper";
+
+import {ModuleConfig} from "./module-config";
 
 export type ModuleLoader<T> = (config: ModuleConfig) => Promise<T>;
 

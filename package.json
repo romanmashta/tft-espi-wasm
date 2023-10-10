@@ -4,11 +4,18 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc && npm run copyjs",
+    "build": "tsc && yarn copyjs",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "copyjs": "cp src/*.js dist/"
+    "copyjs": "cp src/*.js src/*.d.ts dist/",
+    "prepare": "rm -rf dist && yarn configure:wasm && yarn build:wasm && yarn build",
+    "configure:wasm": "emcmake cmake -Bcmake-build-debug -DCMAKE_BUILD_TYPE=Debug",
+    "build:wasm": "cmake --build cmake-build-debug -j8",
+    "generate:wrapper": "yarn generate:bind && yarn generate:module",
+    "generate:bind": "webidl_binder native/src/module.idl native/src/module_glue",
+    "generate:module": "webidl-dts-gen -i native/src/module.idl -n Module -ed -o ./src/tft-espi-wasm.d.ts"
   },
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "webidl-dts-gen": "^1.7.0"
   }
 }

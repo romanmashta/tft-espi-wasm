@@ -1,0 +1,178 @@
+interface TFT_eSPI{
+    void TFT_eSPI(long w, long h);
+    void init();
+
+    void drawPixel(long x, long y, unsigned long color);
+    void drawChar(long x, long y, unsigned short c, unsigned long color, unsigned long bg, octet size);
+    void drawLine(long xs, long ys, long xe, long ye, unsigned long color);
+    void drawFastVLine(long x, long y, long h, unsigned long color);
+    void drawFastHLine(long x, long y, long w, unsigned long color);
+    void fillRect(long x, long y, long w, long h, unsigned long color);
+
+    void drawChar(unsigned short uniCode, long x, long y, octet font);
+    void drawChar(unsigned short uniCode, long x, long y);
+    short height();
+    short width();
+
+    unsigned short readPixel(long x, long y);
+    void setWindow(long xs, long ys, long xe, long ye);
+    void pushColor(unsigned short color);
+
+    void setRotation(octet r);
+    octet getRotation();
+
+    void setOrigin(long x, long y);
+    long getOriginX();
+    long getOriginY();
+
+    void invertDisplay(boolean i);
+    void setAddrWindow(long xs, long ys, long w, long h);
+
+    void setViewport(long x, long y, long w, long h, optional boolean vpDatum = true);
+    boolean checkViewport(long x, long y, long w, long h);
+    long getViewportX();
+    long getViewportY();
+    long getViewportWidth();
+    long getViewportHeight();
+    boolean getViewportDatum();
+    void frameViewport(unsigned short color, long w);
+    void resetViewport();
+
+    //boolean clipAddrWindow(long* x, long* y, long* w, long* h);
+    //boolean clipWindow(long* xs, long* ys, long* xe, long* ye);
+
+    void pushColor(unsigned short color, unsigned long len);
+    void pushColors(unsigned short[] data, unsigned long len, optional boolean swap = true);
+    //void pushColors(octet[] data, unsigned long len);
+
+    void pushBlock(unsigned short color, unsigned long len);
+
+    void pushPixels(octet[] data_in, unsigned long len);
+
+    void fillScreen(unsigned long color);
+    void drawRect(long x, long y, long w, long h, unsigned long color);
+    void drawRoundRect(long x, long y, long w, long h, long radius, unsigned long color);
+    void fillRoundRect(long x, long y, long w, long h, long radius, unsigned long color);
+
+    void fillRectVGradient(short x, short y, short w, short h, unsigned long color1, unsigned long color2);
+    void fillRectHGradient(short x, short y, short w, short h, unsigned long color1, unsigned long color2);
+
+    void drawCircle(long x, long y, long r, unsigned long color);
+    void drawCircleHelper(long x, long y, long r, octet cornername, unsigned long color);
+    void fillCircle(long x, long y, long r, unsigned long color);
+    void fillCircleHelper(long x, long y, long r, octet cornername, long delta, unsigned long color);
+
+    void drawEllipse(short x, short y, long rx, long ry, unsigned short color);
+    void fillEllipse(short x, short y, long rx, long ry, unsigned short color);
+
+    void drawTriangle(long x1, long y1, long x2, long y2, long x3, long y3, unsigned long color);
+    void fillTriangle(long x1, long y1, long x2, long y2, long x3, long y3, unsigned long color);
+
+    //void drawPixel(long x, long y, unsigned long color, octet alpha, optional unsigned long bg_color = 0x00FFFFFF);
+
+    void drawSmoothArc(long x, long y, long r, long ir, unsigned long startAngle, unsigned long endAngle, unsigned long fg_color, unsigned long bg_color, optional boolean roundEnds = false);
+    void drawArc(long x, long y, long r, long ir, unsigned long startAngle, unsigned long endAngle, unsigned long fg_color, unsigned long bg_color, optional boolean smoothArc = true);
+
+    void drawSmoothCircle(long x, long y, long r, unsigned long fg_color, unsigned long bg_color);
+    void fillSmoothCircle(long x, long y, long r, unsigned long color, optional unsigned long bg_color = 0x00FFFFFF);
+    void drawSmoothRoundRect(long x, long y, long r, long ir, long w, long h, unsigned long fg_color, optional unsigned long bg_color = 0x00FFFFFF, optional octet quadrants = 0xF);
+    void fillSmoothRoundRect(long x, long y, long w, long h, long radius, unsigned long color, optional unsigned long bg_color = 0x00FFFFFF);
+
+    void drawSpot(float ax, float ay, float r, unsigned long fg_color, optional unsigned long bg_color = 0x00FFFFFF);
+    void drawWideLine(float ax, float ay, float bx, float by, float wd, unsigned long fg_color, optional unsigned long bg_color = 0x00FFFFFF);
+    void drawWedgeLine(float ax, float ay, float bx, float by, float aw, float bw, unsigned long fg_color, optional unsigned long bg_color = 0x00FFFFFF);
+
+    void setSwapBytes(boolean swap);
+    boolean getSwapBytes();
+
+    void drawBitmap( short x, short y, octet[] bitmap, short w, short h, unsigned short fgcolor);
+    void drawBitmap( short x, short y, octet[] bitmap, short w, short h, unsigned short fgcolor, unsigned short bgcolor);
+
+    void setPivot(short x, short y);
+    short getPivotX();
+    short getPivotY();
+
+    //void readRect(long x, long y, long w, long h, unsigned short[] data);
+    void pushRect(long x, long y, long w, long h, unsigned short[] data);
+    void pushImage(long x, long y, long w, long h, unsigned short[] data);
+    void pushImage(long x, long y, long w, long h, unsigned short[] data, unsigned short transparent);
+    void pushMaskedImage(long x, long y, long w, long h, unsigned short[] img, octet[] mask);
+
+    short drawNumber(long intNumber, long x, long y, octet font);
+    short drawNumber(long intNumber, long x, long y);
+
+    short drawFloat(float floatNumber, octet decimal, long x, long y, octet font);
+    short drawFloat(float floatNumber, octet decimal, long x, long y);
+
+    short drawString(DOMString string, long x, long y, octet font);
+    short drawString(DOMString string, long x, long y);
+
+    void setCursor(short x, short y);
+    void setCursor(short x, short y, octet font);
+
+    short getCursorX();
+    short getCursorY();
+
+    void setTextColor(unsigned short color);
+    void setTextColor(unsigned short fgcolor, unsigned short bgcolor, optional boolean bgfill = false);
+    void setTextSize(octet size);
+    void setTextWrap(boolean wrapX, optional boolean wrapY = false);
+    void setTextDatum(octet datum);
+    octet  getTextDatum();
+    void setTextPadding(unsigned short x_width);
+    unsigned short getTextPadding();
+
+    //void     setFreeFont(const GFXfont *f = NULL);
+    void setTextFont(octet font);
+
+    short textWidth(DOMString string, octet font);
+    short textWidth(DOMString string);
+    short fontHeight(short font);
+    short fontHeight();
+
+    unsigned short color565(octet red, octet green, octet blue);
+    unsigned short color8to16(octet color332);
+    octet  color16to8(unsigned short color565);
+    unsigned long color16to24(unsigned short color565);
+    unsigned long color24to16(unsigned long color888);
+    unsigned short alphaBlend(octet alpha, unsigned short fgc, unsigned short bgc);
+    unsigned short alphaBlend(octet alpha, unsigned short fgc, unsigned short bgc, octet dither);
+    unsigned long alphaBlend24(octet alpha, unsigned long fgc, unsigned long bgc, optional octet dither = 0);
+
+    void loadFont(octet[] array);
+    void unloadFont();
+};
+
+interface TFT_eSprite{
+    void TFT_eSprite(TFT_eSPI tft);
+
+    void createSprite(short width, short height, optional octet frames = 1);
+    boolean created();
+
+    void setColorDepth(byte b);
+    byte   getColorDepth();
+
+    void createPalette(unsigned short[] palette, optional octet colors = 16);
+    void setPaletteColor(octet index, unsigned short color);
+    unsigned short getPaletteColor(octet index);
+
+    void setBitmapColor(unsigned short fg, unsigned short bg);
+    void fillSprite(unsigned long color);
+    void setScrollRect(long x, long y, long w, long h, optional unsigned short color = 0x0000);
+    void scroll(short dx, optional short dy = 0);
+    //boolean     pushRotated(short angle, optional unsigned long transp = 0x00FFFFFF);
+    boolean     pushRotated(TFT_eSprite spr, short angle, optional unsigned long transp = 0x00FFFFFF);
+    boolean     pushSprite(long tx, long ty, long sx, long sy, long sw, long sh);
+
+    boolean     pushToSprite(TFT_eSprite dspr, long x, long y);
+    boolean     pushToSprite(TFT_eSprite dspr, long x, long y, unsigned short transparent);
+
+    void printToSprite(DOMString string);
+};
+
+TFT_eSprite implements TFT_eSPI;
+
+interface DisplayContext{
+    void DisplayContext(long width, long height);
+    void DrawToScreen(TFT_eSprite sprite);
+};
