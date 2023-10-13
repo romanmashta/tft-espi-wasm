@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@types/fontkit": "^2.0.4",
+    "binutils64": "^0.1.2",
     "fontkit": "^2.0.2"
   }
 }
