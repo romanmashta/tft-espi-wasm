@@ -1,4 +1,4 @@
-import {BBOX, Font, Glyph, GlyphRun} from "fontkit";
+import fontkit, {BBOX, create, Font, Glyph, GlyphRun} from "fontkit";
 import {createCanvas} from "canvas";
 // @ts-ignore
 import binutils from "binutils64";
@@ -137,7 +137,8 @@ export const buildVlwFontData = (font: Font, fontSize: number, range: string = B
   }
 }
 
-export const buildVlwFont = (font: Font, fontSize: number, range: string = BasicLatinRange): uint8_t[] => {
+export const buildVlwFont = (fontData: Buffer, fontSize: number, range: string = BasicLatinRange): uint8_t[] => {
+  var font = fontkit.create(fontData);
   const vlwFont = buildVlwFontData(font, fontSize, range);
   const writer = new binutils.BinaryWriter();
 
