@@ -87,9 +87,11 @@ function buildBitmaps(font: Font, glyphs: VlwGlyphHeader[], descend: number, fon
   const result = [];
 
   ctx.antialias = 'subpixel';
+  ctx.lineWidth = 0.5;
 
   for(let i = 0; i < glyphs.length; i++) {
     const header = glyphs[i];
+
     const baseline = - header.topExtent;
 
     ctx.resetTransform();
@@ -103,7 +105,7 @@ function buildBitmaps(font: Font, glyphs: VlwGlyphHeader[], descend: number, fon
     ctx.translate(-header.leftExtent, baseline);
 
     const glyph = glyphs[i].glyph;
-    // ctx.strokeStyle = 'none';
+    ctx.strokeStyle = 'white';
     ctx.fillStyle = 'white';
     glyph.render(ctx as any, fontSize);
     ctx.stroke();
