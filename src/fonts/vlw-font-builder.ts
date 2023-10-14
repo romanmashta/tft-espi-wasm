@@ -1,6 +1,5 @@
 import {BBOX, create, Font, Glyph, GlyphRun} from "fontkit";
 import {createCanvas} from "canvas";
-// @ts-ignore
 import {BinaryWriter} from './binary-writer';
 
 type uint32_t = number;
@@ -168,10 +167,10 @@ export const buildVlwFont = (fontData: Buffer, fontSize: number, range: string =
   // Write data
   writer.WriteBytes(vlwFont.data);
   writer.WriteInt16(vlwFont.namelen);
-  writer.WriteBytes(vlwFont.name);
+  writer.WriteString(vlwFont.name);
   writer.WriteInt16(vlwFont.psnamelen);
-  writer.WriteBytes(vlwFont.psname);
+  writer.WriteString(vlwFont.psname);
   writer.WriteInt8(vlwFont.smooth);
 
-  return [...writer.ByteBuffer];
+  return writer.ByteBuffer;
 }
