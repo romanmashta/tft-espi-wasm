@@ -1,7 +1,7 @@
-import fontkit, {BBOX, create, Font, Glyph, GlyphRun} from "fontkit";
+import {BBOX, create, Font, Glyph, GlyphRun} from "fontkit";
 import {createCanvas} from "canvas";
 // @ts-ignore
-import binutils from "binutils64";
+import {BinaryWriter} from './binary-writer';
 
 type uint32_t = number;
 type uint16_t = number;
@@ -95,7 +95,7 @@ function buildBitmaps(font: Font, glyphs: VlwGlyphHeader[], descend: number, fon
     ctx.resetTransform();
     // Clear canvas
     ctx.beginPath();
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
 
@@ -103,15 +103,15 @@ function buildBitmaps(font: Font, glyphs: VlwGlyphHeader[], descend: number, fon
     ctx.translate(-header.leftExtent, baseline);
 
     const glyph = glyphs[i].glyph;
-    ctx.strokeStyle = 'none';
-    ctx.fillStyle = 'black';
+    // ctx.strokeStyle = 'none';
+    ctx.fillStyle = 'white';
     glyph.render(ctx as any, fontSize);
     ctx.stroke();
 
     //commit canvas to 8-bit grayscale array
     const glyphData = ctx.getImageData(0, 0, header.width, header.height);
     for (let j = 0; j < glyphData.data.length; j += 4) {
-      const alpha = 255 - glyphData.data[j];
+      const alpha = glyphData.data[j];
       result.push(alpha);
     }
   }
@@ -133,14 +133,15 @@ export const buildVlwFontData = (font: Font, fontSize: number, range: string = B
     name: font.familyName,
     psnamelen: font.postscriptName.length,
     psname: font.postscriptName,
-    smooth: 1
+    smooth: 0
   }
 }
 
 export const buildVlwFont = (fontData: Buffer, fontSize: number, range: string = BasicLatinRange): uint8_t[] => {
-  var font = fontkit.create(fontData);
+  var font = create(fontData);
   const vlwFont = buildVlwFontData(font, fontSize, range);
-  const writer = new binutils.BinaryWriter();
+  // @ts-ignore
+  const writer = new BinaryWriter();
 
   // Write header
   writer.WriteInt32(vlwFont.header.numGlyphs);
